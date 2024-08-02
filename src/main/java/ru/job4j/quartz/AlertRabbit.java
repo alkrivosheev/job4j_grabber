@@ -33,7 +33,7 @@ public class AlertRabbit {
     public static class Rabbit implements Job {
         @Override
         public void execute(JobExecutionContext context) {
-            System.out.println("Rabbit runs here ... ");
+            System.out.println("Rabbit runs here ...");
         }
     }
 
