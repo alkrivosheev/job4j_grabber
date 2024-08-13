@@ -12,7 +12,7 @@ public class HabrCareerParse {
     private static final Integer PAGES_TO_PARSE = 5;
     private static final String SOURCE_LINK = "https://career.habr.com";
     public static final String PREFIX = "/vacancies?page=";
-    public static final String SUFFIX = "&q=Java%20developer&type=all  ";
+    public static final String SUFFIX = "&q=Java%20developer&type=all";
 
     private static String retrieveDescription(String link) {
         String res = "";
