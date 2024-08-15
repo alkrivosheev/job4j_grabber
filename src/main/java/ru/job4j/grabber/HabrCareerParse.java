@@ -44,7 +44,7 @@ public class HabrCareerParse implements  Parse {
                 String vacancyText = retrieveDescription(linkElement.attr("href"));
                 String vacancyName = titleElement.text();
                 String descriptionLink = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
-                Post post = new Post(0);
+                Post post = new Post();
                 post.setTitle(vacancyName);
                 post.setLink(descriptionLink);
                 post.setDescription(vacancyText);
@@ -67,12 +67,5 @@ public class HabrCareerParse implements  Parse {
             System.out.println(e);
         }
         return res;
-    }
-
-    public static void main(String[] args) throws IOException {
-        HabrCareerDateTimeParser parser = new HabrCareerDateTimeParser();
-        String fullLink = "%s%s%s".formatted(SOURCE_LINK, PREFIX, SUFFIX);
-        HabrCareerParse hcp = new HabrCareerParse(parser);
-        System.out.println(hcp.list(fullLink).size());
     }
 }
