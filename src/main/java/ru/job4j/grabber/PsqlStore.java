@@ -11,6 +11,15 @@ public class PsqlStore implements Store {
 
     private Connection connection;
 
+    private Post createPost(int id, String name, String description, String link, LocalDateTime created) {
+        Post post = new Post(id);
+        post.setTitle(name);
+        post.setDescription(description);
+        post.setLink(link);
+        post.setCreated(created);
+        return post;
+    }
+
     private void createTableIfNotExists(Connection connection) throws SQLException {
         String createTableSQL = String.format(
                 "CREATE TABLE IF NOT EXISTS post ("
@@ -45,10 +54,7 @@ public class PsqlStore implements Store {
         String sql = "INSERT INTO post (id, name, text, link, created)"
                 + " VALUES (?, ?, ?, ?, ?)"
                 + " ON CONFLICT(link)"
-                + " DO UPDATE SET"
-                + " text = EXCLUDED.text,"
-                + " created = EXCLUDED.created,"
-                + " name = EXCLUDED.name;";
+                + " DO NOTHING;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, post.getId());
             preparedStatement.setString(2, post.getTitle());
@@ -115,21 +121,8 @@ public class PsqlStore implements Store {
             Properties config = new Properties();
             config.load(input);
             PsqlStore ps = new PsqlStore(config);
-            Post post = new Post(0);
-            post.setLink("link1");
-            post.setTitle("title1");
-            post.setDescription("description1");
-            LocalDateTime ldt = LocalDateTime.now();
-            post.setCreated(ldt);
-            ps.save(post);
-
-            Post otherPost = new Post(0);
-            otherPost.setLink("link1");
-            otherPost.setTitle("title2");
-            otherPost.setDescription("description2");
-            ldt = LocalDateTime.now();
-            otherPost.setCreated(ldt);
-            ps.save(otherPost);
+            ps.save(ps.createPost(0, "title1", "description1", "link1", LocalDateTime.now()));
+            ps.save(ps.createPost(1, "title2", "description2", "link1", LocalDateTime.now()));
 
             System.out.println(ps.getAll());
 
